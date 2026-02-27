@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MetroRate – Commission tracker for Chrome</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="logo">MetroRate</div>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#privacy">Privacy</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <h1>See your commission at a glance</h1>
+        <p>
+          MetroRate is a minimalist Chrome extension that lives in your browser side panel.
+          Log deals like <code>Nike 50k</code> and instantly see commission, pipeline value, and progress toward your goal.
+        </p>
+        <div class="hero-actions">
+          <a href="https://chromewebstore.google.com" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Add to Chrome</a>
+          <button type="button" id="buy-button" class="btn btn-secondary">View plans</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section card-block">
+      <h2>About MetroRate</h2>
+      <p class="lead">
+        A commission tracker built for people who move fast. No clutter — just your numbers, next to your pipeline.
+      </p>
+      <div class="card">
+        <h3>How it works</h3>
+        <ul>
+          <li><strong>Log a deal</strong> — Type a deal name and value (e.g. <code>ACME 12,500</code>). MetroRate applies your commission rate and saves it.</li>
+          <li><strong>Dashboard</strong> — Total commission, pipeline value, and a progress bar toward your goal. Recent deals at a glance.</li>
+          <li><strong>History</strong> — Every deal you log is stored locally in your browser. Your data stays on your machine.</li>
+          <li><strong>Presets</strong> — Save product templates for one-tap logging. Set your commission rate and visibility (blur amounts when you need privacy).</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Free plan</h3>
+        <p>
+          You get a set number of free logs per day. When you hit the limit, your data remains visible and you can add more deals tomorrow. Upgrade for unlimited logs.
+        </p>
+      </div>
+    </section>
+
+    <section id="pricing" class="section card-block">
+      <h2>Plans &amp; pricing</h2>
+      <p class="lead">Start free. Unlock unlimited logs with a single one-time payment.</p>
+
+      <div class="pricing-grid">
+        <div class="card pricing-card">
+          <span class="label">Free</span>
+          <p class="price">$0</p>
+          <p class="price-desc">always free</p>
+          <ul>
+            <li>Daily limit on new deal logs</li>
+            <li>All data stored locally in Chrome</li>
+            <li>Commission rate &amp; presets</li>
+            <li>Goal and history tracking</li>
+          </ul>
+          <p class="fine">Ideal for trying MetroRate.</p>
+        </div>
+        <div class="card pricing-card featured">
+          <span class="label">Unlimited</span>
+          <p class="price">$9</p>
+          <p class="price-desc">one-time</p>
+          <ul>
+            <li>Unlimited logs per day, forever</li>
+            <li>Same local storage &amp; privacy</li>
+            <li>All Free features included</li>
+            <li>Lifetime access — no subscription</li>
+          </ul>
+          <button type="button" id="pay-button" class="btn btn-primary btn-block">Proceed to secure checkout</button>
+          <p class="fine">One-time payment. Processed securely by Stripe.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="privacy" class="section card-block">
+      <h2>Privacy Policy</h2>
+
+      <div class="card">
+        <h3>1. Overview</h3>
+        <p>
+          MetroRate is a Chrome extension designed to help you track commissions and deals. We take your privacy seriously. By default, MetroRate processes information locally in your browser and does not send your deal data to our servers.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>2. Data stored by the extension</h3>
+        <p>We store the following in Chrome storage on your device only:</p>
+        <ul>
+          <li>Deal information you enter (deal names, values, calculated commission amounts).</li>
+          <li>Presets you configure (labels and amounts for one-tap logging).</li>
+          <li>Settings (commission rate, visibility/blur preference, onboarding state).</li>
+          <li>A count of how many deals you logged per day (to enforce the free daily limit).</li>
+        </ul>
+        <p>
+          This data is stored locally and is <strong>not</strong> sent to our servers as part of normal operation. We do not sell your personal data or use it for advertising.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>3. Payment information</h3>
+        <p>
+          Payments for MetroRate are processed by Stripe on a secure checkout page. The extension does not process or store payment card numbers or bank details. When you make a one-time purchase via our landing page, Stripe may collect and store payment card details, billing name and email, and billing address in accordance with Stripe's privacy policy.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>4. How we use your information</h3>
+        <ul>
+          <li>To provide access to the one-time unlimited upgrade and process payments via Stripe.</li>
+          <li>To handle support and communicate about service changes.</li>
+          <li>To improve the extension in aggregate (we do not mine your deal data).</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>5. Data sharing</h3>
+        <p>
+          We may share limited information with Stripe (payments) and email providers (transactional emails). We do not sell or rent your personal data.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>6. Your choices</h3>
+        <ul>
+          <li>Uninstall the extension at any time; local data is removed with the extension.</li>
+          <li>Request a refund for your one-time purchase by contacting us, subject to our refund policy.</li>
+          <li>Request access to or deletion of your personal data, subject to legal requirements.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>7. Contact</h3>
+        <p>
+          Questions about this Privacy Policy or how MetroRate handles your data:
+        </p>
+        <p>
+          <a href="mailto:metrorateextension@gmail.com">metrorateextension@gmail.com</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>© <span id="year"></span> MetroRate</span>
+    <div class="footer-links">
+      <a href="#privacy">Privacy Policy</a>
+      <a href="mailto:metrorateextension@gmail.com">Contact</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
