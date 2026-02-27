@@ -168,7 +168,7 @@ export function Sidepanel() {
             {onboardingStep === 2 && (
               <GlassCard className="p-5 flex flex-col gap-3">
                 <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-50">
-                  Free plan &amp; privacy
+                  Free plan, upgrade &amp; privacy
                 </h2>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
                   MetroRate gives you {freeDailyLimit} free logs per day. When
@@ -185,7 +185,7 @@ export function Sidepanel() {
                     window.open(LANDING_PAGE_URL, "_blank", "noopener,noreferrer")
                   }
                 >
-                  View plans &amp; FAQs
+                  Get unlimited &amp; FAQs
                 </button>
               </GlassCard>
             )}
@@ -570,11 +570,11 @@ export function Sidepanel() {
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col">
                     <span className="text-xs font-semibold text-slate-700">
-                      {isPaid ? "Unlimited plan" : "Free plan"}
+                      {isPaid ? "Unlimited (one-time)" : "Free plan"}
                     </span>
                     <span className="text-[11px] text-slate-500">
                       {isPaid
-                        ? "Log unlimited deals per day."
+                        ? "Log unlimited deals per day — lifetime access."
                         : `Log up to ${freeDailyLimit} deals per day. Perfect for trying MetroRate.`}
                     </span>
                   </div>
@@ -603,8 +603,8 @@ export function Sidepanel() {
                 </div>
                 <p className="text-[11px] text-slate-500">
                   {isPaid
-                    ? "Unlimited access is active in this browser profile."
-                    : "Need more? Upgrade on the website to unlock unlimited logs."}
+                    ? "Unlimited access is active in this browser (one-time purchase)."
+                    : "Need more? One-time payment on the website unlocks unlimited logs forever."}
                 </p>
                 <div className="flex justify-between gap-2">
                   <button
@@ -617,13 +617,13 @@ export function Sidepanel() {
                       )
                     }
                   >
-                    View plans &amp; pricing
+                    Get unlimited (one-time)
                   </button>
                   <button
                     className="px-3 py-1 text-[11px] font-semibold border border-black text-slate-700 bg-white hover:bg-black hover:text-white transition-colors"
                     onClick={() => setIsPaid(true)}
                   >
-                    I&apos;ve upgraded
+                    I&apos;ve purchased
                   </button>
                 </div>
               </GlassCard>
@@ -778,7 +778,7 @@ export function Sidepanel() {
                 window.open(LANDING_PAGE_URL, "_blank", "noopener,noreferrer")
               }
             >
-              View plans
+              Get unlimited
             </button>
           </div>
         </div>

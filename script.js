@@ -7,7 +7,7 @@ document.getElementById("pay-button")?.addEventListener("click", () => {
   //
   // How to configure:
   // 1. Go to your Stripe Dashboard → Payments → Payment Links.
-  // 2. Create a Payment Link or Checkout Session for the Metrorate subscription.
+  // 2. Create a Payment Link or Checkout Session for the one-time unlimited purchase.
   // 3. Copy the checkout URL (it usually looks like: https://checkout.stripe.com/c/pay_...).
   // 4. Paste it below in place of the placeholder string.
 
