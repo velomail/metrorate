@@ -3,7 +3,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { GlassCard } from "../components/GlassCard";
 import { useCommission } from "../hooks/useCommission";
 
-const LANDING_PAGE_URL = "https://your-metrorate-landing-page.com";
+const LANDING_PAGE_URL = "https://velomail.github.io/metrorate/";
 
 function formatCurrency(value: number, isHushed: boolean) {
   const formatted = new Intl.NumberFormat("en-US", {
