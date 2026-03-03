@@ -6,5 +6,8 @@
 /** Landing page (plans, privacy, upgrade). Same content on GitHub Pages and Vercel. */
 export const LANDING_PAGE_URL = "https://velomail.github.io/metrorate/";
 
+/** Support / contact page. Used in extension Settings. */
+export const SUPPORT_PAGE_URL = "https://velomail.github.io/metrorate/#support";
+
 /** Chrome Web Store listing. Replace with your real listing URL after publish. */
 export const CHROME_WEB_STORE_URL = "https://chromewebstore.google.com";
