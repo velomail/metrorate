@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { GlassCard } from "../components/GlassCard";
 import { useCommission } from "../hooks/useCommission";
-
-const LANDING_PAGE_URL = "https://velomail.github.io/metrorate/";
+import { LANDING_PAGE_URL } from "../config/landing";
 
 function formatCurrency(value: number, isHushed: boolean) {
   const formatted = new Intl.NumberFormat("en-US", {
@@ -35,6 +34,13 @@ export function Sidepanel() {
     setIsPaid,
     commissionRate,
     setCommissionRate,
+    commissionThisMonth,
+    valueThisMonth,
+    quota,
+    setQuota,
+    attainmentPercent,
+    goal,
+    setGoal,
     isAtFreeLimit,
     dealsTodayCount,
     freeDailyLimit
@@ -81,12 +87,6 @@ export function Sidepanel() {
     setInput("");
   };
 
-  const handleAddSampleDeal = () => {
-    if (isAtFreeLimit) return;
-    addDealFromInput("Sample client 10k");
-    setPage("log");
-  };
-
   const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -98,9 +98,8 @@ export function Sidepanel() {
 
   const recentDeals = deals.slice(0, 4);
 
-  const GOAL = 650;
   const progress =
-    GOAL > 0 ? Math.min(100, Math.round((totalCommission / GOAL) * 100)) : 0;
+    goal > 0 ? Math.min(100, Math.round((commissionThisMonth / goal) * 100)) : 0;
 
   const commissionPercent = Math.round(commissionRate * 100);
 
@@ -114,96 +113,116 @@ export function Sidepanel() {
   };
 
   return (
-    <div className="relative flex h-full w-full max-w-[360px] flex-col overflow-hidden bg-white text-black">
+    <div className="relative flex h-full w-full max-w-[360px] flex-col overflow-hidden bg-white text-heading">
       {showOnboarding && (
-        <div className="absolute inset-0 z-30 flex flex-col bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm">
-          <div className="flex items-center justify-between px-4 pt-3 pb-1 text-[11px] text-slate-400">
+        <div className="absolute inset-0 z-30 flex flex-col bg-white dark:bg-background-dark/95 backdrop-blur-sm">
+          <div className="flex items-center justify-between px-4 pt-3 pb-1 text-[11px] text-muted">
             <span>Welcome to MetroRate</span>
             <button
-              className="text-[10px] underline decoration-dotted"
+              className="text-[10px] text-muted hover:text-primary underline decoration-dotted transition-colors"
               onClick={completeOnboarding}
             >
               Skip
             </button>
           </div>
 
-          <div className="flex-1 px-5 pb-4 flex flex-col justify-center gap-4">
+          <div className="flex-1 min-h-0 flex flex-col justify-center px-5 py-6 overflow-y-auto">
             {onboardingStep === 0 && (
-              <GlassCard className="p-5 flex flex-col gap-3">
-                <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+              <GlassCard className="p-6 sm:p-8 flex flex-col gap-4">
+                <div className="w-12 h-12 rounded-xl bg-[#dbeafe] flex items-center justify-center">
+                  <span className="material-symbols-outlined text-2xl text-primary">trending_up</span>
+                </div>
+                <h2 className="text-lg font-semibold text-heading">
                   See your commission at a glance
                 </h2>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
+                <p className="text-sm text-muted">
                   MetroRate lives in your browser side panel so you always see
                   your commission next to your pipeline.
                 </p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
-                  Add a deal like <span className="font-mono">Nike 50k</span>{" "}
+                <p className="text-sm text-muted">
+                  Add a deal like <span className="font-mono text-heading">Nike 50k</span>{" "}
                   and MetroRate instantly calculates the commission for you.
                 </p>
               </GlassCard>
             )}
 
             {onboardingStep === 1 && (
-              <GlassCard className="p-5 flex flex-col gap-3">
-                <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+              <GlassCard className="p-6 sm:p-8 flex flex-col gap-4">
+                <div className="w-12 h-12 rounded-xl bg-[#dbeafe] flex items-center justify-center">
+                  <span className="material-symbols-outlined text-2xl text-primary">checklist</span>
+                </div>
+                <h2 className="text-lg font-semibold text-heading">
                   How MetroRate works
                 </h2>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
-                  <span className="font-semibold">1.</span> Add a deal in the
-                  Calculator tab (e.g.{" "}
-                  <span className="font-mono">Nike 50k</span>).
+                <p className="text-sm text-muted">
+                  <span className="font-semibold text-heading">1.</span> Add a deal in the
+                  Log deal tab (e.g.{" "}
+                  <span className="font-mono text-heading">Nike 50k</span>).
                 </p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
-                  <span className="font-semibold">2.</span> MetroRate applies
+                <p className="text-sm text-muted">
+                  <span className="font-semibold text-heading">2.</span> MetroRate applies
                   your commission rate and tracks volume and earnings.
                 </p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
-                  <span className="font-semibold">3.</span> Watch your goal and
+                <p className="text-sm text-muted">
+                  <span className="font-semibold text-heading">3.</span> Watch your goal and
                   daily-usage bars move on the Dashboard.
                 </p>
+                <button
+                  type="button"
+                  className="rounded-lg border border-border px-4 py-2 text-sm font-semibold text-heading bg-white hover:border-primary hover:text-primary transition-colors"
+                  onClick={() => {
+                    completeOnboarding();
+                    setPage("log");
+                  }}
+                >
+                  Try it
+                </button>
               </GlassCard>
             )}
 
             {onboardingStep === 2 && (
-              <GlassCard className="p-5 flex flex-col gap-3">
-                <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+              <GlassCard className="p-6 sm:p-8 flex flex-col gap-4">
+                <div className="w-12 h-12 rounded-xl bg-[#dbeafe] flex items-center justify-center">
+                  <span className="material-symbols-outlined text-2xl text-primary">verified_user</span>
+                </div>
+                <h2 className="text-lg font-semibold text-heading">
                   Free plan, upgrade &amp; privacy
                 </h2>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
+                <p className="text-sm text-muted">
                   MetroRate gives you {freeDailyLimit} free logs per day. When
                   you hit the limit, your data remains visible and you can add
                   more deals tomorrow.
                 </p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
+                <p className="text-sm text-muted">
                   Your deals are stored in Chrome storage only — nothing leaves
                   your browser without your consent.
                 </p>
                 <button
-                  className="mt-1 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-content shadow-sm"
+                  type="button"
+                  className="rounded-lg border border-border px-4 py-2 text-sm font-semibold text-heading bg-white hover:border-primary hover:text-primary transition-colors"
                   onClick={() =>
                     window.open(LANDING_PAGE_URL, "_blank", "noopener,noreferrer")
                   }
                 >
-                  Get unlimited &amp; FAQs
+                  Add payment
                 </button>
               </GlassCard>
             )}
           </div>
 
-          <div className="pb-4 px-5 flex items-center justify-between">
+          <div className="pb-4 px-5 flex items-center justify-between shrink-0">
             <div className="flex items-center gap-2">
-              <span className="text-[10px] text-slate-500 dark:text-slate-400">
+              <span className="text-xs text-muted">
                 Step {onboardingStep + 1} of 3
               </span>
-              <div className="flex gap-1.5">
+              <div className="flex gap-2">
               {[0, 1, 2].map((i) => (
                 <button
                   key={i}
-                  className={`h-1.5 rounded-full transition-all ${
+                  className={`rounded-full transition-all ${
                     onboardingStep === i
-                      ? "w-4 bg-primary"
-                      : "w-2 bg-slate-500/40"
+                      ? "w-5 h-2 bg-primary"
+                      : "w-2 h-2 bg-border"
                   }`}
                   onClick={() => setOnboardingStep(i)}
                   aria-label={`Go to slide ${i + 1}`}
@@ -214,7 +233,7 @@ export function Sidepanel() {
             <div className="flex gap-2">
               {onboardingStep > 0 && (
                 <button
-                  className="rounded-full border border-surface-variant/70 dark:border-surface-variant-dark/70 px-3 py-1 text-[11px] text-slate-600 dark:text-slate-200"
+                  className="rounded-lg border border-border px-3 py-1 text-[11px] text-heading hover:border-primary hover:text-primary transition-colors"
                   onClick={() => setOnboardingStep((s) => Math.max(0, s - 1))}
                 >
                   Back
@@ -222,14 +241,14 @@ export function Sidepanel() {
               )}
               {onboardingStep < 2 ? (
                 <button
-                  className="rounded-full bg-primary px-3 py-1 text-[11px] font-semibold text-primary-content"
+                  className="rounded-lg bg-primary px-3 py-1 text-[11px] font-semibold text-primary-content hover:bg-primary-dark transition-colors"
                   onClick={() => setOnboardingStep((s) => Math.min(2, s + 1))}
                 >
                   Next
                 </button>
               ) : (
                 <button
-                  className="rounded-full bg-primary px-3 py-1 text-[11px] font-semibold text-primary-content"
+                  className="rounded-lg bg-primary px-3 py-1 text-[11px] font-semibold text-primary-content hover:bg-primary-dark transition-colors"
                   onClick={completeOnboarding}
                 >
                   Get started
@@ -239,7 +258,7 @@ export function Sidepanel() {
           </div>
         </div>
       )}
-      <nav className="px-3 pt-2 pb-2 flex items-center justify-between text-[11px] font-medium text-slate-700">
+      <nav className="px-5 pt-3 pb-3 flex items-center justify-between text-[11px] font-medium text-heading border-b border-border">
         <div className="flex gap-1 flex-1">
           {(["dashboard", "history", "log", "settings"] as Page[]).map((id) => {
             const icons: Record<Page, string> = {
@@ -268,18 +287,22 @@ export function Sidepanel() {
                 aria-label={labels[id]}
                 className={`flex-1 flex flex-col items-center justify-center px-1 py-1.5 border-b-2 ${
                   active
-                    ? "border-black text-black"
-                    : "border-transparent text-slate-500 hover:text-black"
+                    ? "border-primary text-primary"
+                    : "border-transparent text-muted hover:text-primary"
                 }`}
                 title={titles[id]}
               >
                 <div className="flex flex-col items-center gap-0.5">
-                  <span className="material-symbols-outlined text-base">
+                  <span
+                    className={`material-symbols-outlined text-base ${
+                      active ? "text-primary" : "text-muted"
+                    }`}
+                  >
                     {icons[id]}
                   </span>
                   <span
                     className={`text-[10px] font-medium ${
-                      active ? "opacity-100" : "opacity-80"
+                      active ? "text-primary opacity-100" : "text-muted opacity-90"
                     }`}
                   >
                     {labels[id]}
@@ -291,43 +314,52 @@ export function Sidepanel() {
         </div>
       </nav>
 
-      <main className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide pb-24">
+      <main className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide pb-24 px-5">
         {page === "dashboard" && (
           <>
-            <section className="px-5 pt-4 pb-2">
-              <GlassCard className="relative overflow-hidden p-5 border border-black">
-                <h2 className="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">
+            <section className="pt-6 pb-2">
+              <GlassCard className="relative overflow-hidden p-5">
+                <h2 className="text-muted text-xs font-semibold uppercase tracking-wider mb-2">
                   Total commission
                 </h2>
-                <div className="flex flex-col gap-1">
-                  <span className="text-3xl font-bold text-slate-900 dark:text-slate-50">
+                <div className="flex flex-col gap-2.5">
+                  <span className="text-3xl font-bold text-heading">
                     {formatCurrency(totalCommission, isHushed)}
                   </span>
-                  <p className="text-slate-500 dark:text-slate-400 text-sm">
+                  <p className="text-muted text-sm">
                     From {deals.length} logged deal
                     {deals.length === 1 ? "" : "s"} in MetroRate.
                   </p>
                 </div>
 
-                <div className="mt-6 flex flex-col gap-2 border-t border-black pt-3">
+                <div className="mt-6 flex flex-col gap-3 border-t border-border pt-5">
                   <div className="flex justify-between items-end">
-                    <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                    <span className="text-xs font-medium text-heading">
                       Pipeline: {formatCurrency(totalValue, isHushed)}
                     </span>
-                    <span className="text-xs font-bold text-slate-700">
-                      {progress}% of $650 goal
+                    <span className="text-xs font-bold text-heading">
+                      {progress}% of {formatCurrency(goal, false)} commission goal
                     </span>
                   </div>
-                  <div className="h-4 w-full rounded-none bg-slate-200 overflow-hidden">
+                  <p className="text-[11px] text-muted -mt-1">
+                    Monthly commission goal — resets at the start of each month.
+                  </p>
+                  {quota > 0 && attainmentPercent !== null && (
+                    <p className="text-[11px] text-muted">
+                      Quota: {formatCurrency(quota, false)} · Attainment this month:{" "}
+                      {attainmentPercent}%
+                    </p>
+                  )}
+                  <div className="h-4 w-full rounded-full bg-slate-100 overflow-hidden">
                     <div
-                      className="h-full bg-black transition-all duration-500 ease-out"
+                      className="h-full bg-primary transition-all duration-500 ease-out"
                       style={{ width: `${progress}%` }}
                     />
                   </div>
                 </div>
 
-                <div className="mt-4 space-y-1">
-                  <div className="flex justify-between text-[11px] text-slate-600 dark:text-slate-300">
+                <div className="mt-6 space-y-2.5">
+                  <div className="flex justify-between text-[11px] text-muted">
                     <span>
                       {isPaid
                         ? "Unlimited logs active"
@@ -341,9 +373,9 @@ export function Sidepanel() {
                       </span>
                     )}
                   </div>
-                  <div className="h-2 w-full rounded-none bg-slate-200 overflow-hidden">
+                  <div className="h-2 w-full rounded-full bg-slate-100 overflow-hidden">
                     <div
-                      className="h-full bg-black transition-all duration-500 ease-out"
+                      className="h-full bg-primary transition-all duration-500 ease-out"
                       style={{
                         width: `${
                           isPaid
@@ -362,9 +394,9 @@ export function Sidepanel() {
               </GlassCard>
             </section>
 
-            <section className="px-5 py-2">
+            <section className="pt-6 pb-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-slate-900 dark:text-slate-100 text-lg font-bold">
+                <h3 className="text-heading text-lg font-bold">
                   Recent deals
                 </h3>
                 <button
@@ -375,39 +407,24 @@ export function Sidepanel() {
                   Open history
                 </button>
               </div>
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-1">
                 {recentDeals.length === 0 && (
-                  <div className="flex items-center justify-between border border-dashed border-black px-3 py-2.5 bg-white">
-                    <div className="flex flex-col">
-                      <p className="text-xs text-slate-500 dark:text-slate-400">
-                        See your pipeline and commission fill up instantly.
-                      </p>
-                      <p className="text-[11px] text-slate-400 dark:text-slate-500">
-                        Add a sample deal to see how MetroRate works. You can
-                        remove it later.
-                      </p>
-                    </div>
-              <button
-                className="ml-3 bg-black px-3 py-1.5 text-[11px] font-semibold text-white border border-black disabled:opacity-50 hover:bg-white hover:text-black transition-colors"
-                      onClick={handleAddSampleDeal}
-                      disabled={isAtFreeLimit}
-                    >
-                      Add sample
-                    </button>
-                  </div>
+                  <p className="text-[11px] text-muted msg-bubble msg-bubble-info py-3">
+                    No deals yet. Log a deal from the Log deal tab.
+                  </p>
                 )}
                 {recentDeals.map((deal) => (
                   <div
                     key={deal.id}
-                    className="flex items-center justify-between border-b border-slate-200 pb-2 last:border-b-0"
+                    className="flex items-center justify-between border-b border-border py-3 first:pt-0 last:border-b-0 last:pb-0"
                   >
                     <div className="flex flex-col">
-                      <h4 className="text-sm font-semibold text-slate-900 leading-tight">
+                      <h4 className="text-sm font-semibold text-heading leading-tight">
                         {deal.name}
                       </h4>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm font-bold text-slate-900">
+                      <p className="text-sm font-bold text-heading">
                         {formatCurrency(deal.commission, isHushed)}
                       </p>
                     </div>
@@ -419,20 +436,20 @@ export function Sidepanel() {
         )}
 
         {page === "history" && (
-          <section className="px-5 pt-6 pb-4 space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="flex flex-col">
-                <h2 className="text-slate-900 dark:text-slate-100 text-sm font-semibold">
+          <section className="pt-6 pb-6 space-y-5">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex flex-col gap-1 min-w-0">
+                <h2 className="text-heading text-base font-semibold">
                   Sales history
                 </h2>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                <p className="text-[11px] text-muted">
                   Every deal you log in MetroRate appears here. Data is stored
                   locally in this browser.
                 </p>
               </div>
               {deals.length > 0 && (
                 <button
-                  className="border border-black px-3 py-1 text-[10px] text-slate-700 bg-white"
+                  className="rounded-lg border border-border px-3 py-1 text-[10px] text-heading bg-white hover:border-primary hover:text-primary transition-colors"
                   onClick={() => {
                     if (window.confirm("Clear all saved deals from this browser?")) {
                       // clearDeals is available via useCommission
@@ -447,33 +464,33 @@ export function Sidepanel() {
               )}
             </div>
             {deals.length === 0 ? (
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                You haven&apos;t logged any deals yet. Add a deal from the
-                Calculator or Quick-add tab to start building your history.
+              <p className="text-xs text-muted msg-bubble msg-bubble-info">
+                You haven&apos;t logged any deals yet. Add a deal from the Log
+                deal tab to start building your history.
               </p>
             ) : (
-              <div className="space-y-2 max-h-[320px] overflow-y-auto pr-1">
+              <div className="space-y-3 max-h-[320px] overflow-y-auto pr-1">
                 {deals.map((deal) => {
                   const created = new Date(deal.createdAt);
                   return (
                     <div
                       key={deal.id}
-                      className="flex items-start justify-between border border-slate-300 px-3 py-2 bg-white"
+                      className="flex items-start justify-between border border-border rounded-xl px-4 py-3 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
                     >
                       <div className="flex flex-col">
-                        <span className="text-xs font-semibold text-slate-900 dark:text-slate-100">
+                        <span className="text-xs font-semibold text-heading">
                           {deal.name}
                         </span>
-                        <span className="text-[11px] text-slate-500 dark:text-slate-400">
+                        <span className="text-[11px] text-muted">
                           {created.toLocaleDateString()} ·{" "}
                           {formatCurrency(deal.value, isHushed)} value
                         </span>
                       </div>
                       <div className="text-right">
-                        <span className="text-xs font-semibold text-slate-900 dark:text-slate-100">
+                        <span className="text-xs font-semibold text-heading">
                           {formatCurrency(deal.commission, isHushed)}
                         </span>
-                        <div className="text-[10px] text-slate-500 dark:text-slate-400">
+                        <div className="text-[10px] text-muted">
                           Commission
                         </div>
                       </div>
@@ -486,55 +503,48 @@ export function Sidepanel() {
         )}
 
         {page === "log" && (
-          <section className="px-5 pt-6 space-y-4">
-            <div>
-              <h2 className="text-slate-900 dark:text-slate-100 text-sm font-semibold mb-1">
+          <section className="pt-6 pb-6 space-y-6">
+            <div className="space-y-1">
+              <h2 className="text-heading text-base font-semibold">
                 Log a deal
               </h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Type a deal like <span className="font-mono">Nike 50k</span>.
+              <p className="text-xs text-muted">
+                Type a deal like <span className="font-mono text-heading">Nike 50k</span>.
                 MetroRate applies your {commissionPercent}% commission rate.
               </p>
             </div>
-            <div className="flex items-center gap-2">
+            <div>
               <input
                 type="text"
-                className="flex-1 border-b-2 border-black bg-white px-3 py-2 text-sm text-black placeholder:text-slate-500 focus:outline-none focus:border-b-4 disabled:opacity-50"
+                className="w-full border border-border rounded-lg bg-white px-3 py-2 text-sm text-heading placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
                 placeholder='Add deal e.g. "Nike 50k"'
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 disabled={isAtFreeLimit}
               />
-              <button
-                className="bg-black px-4 py-2 text-xs font-semibold text-white border border-black disabled:opacity-50 hover:bg-white hover:text-black transition-colors"
-                onClick={handleAddDeal}
-                disabled={isAtFreeLimit}
-              >
-                Add
-              </button>
             </div>
             {error && (
-              <p className="mt-1 text-xs text-red-500 dark:text-red-400">
+              <p className="mt-1 msg-bubble msg-bubble-error" role="alert">
                 {error}
               </p>
             )}
             {isAtFreeLimit && (
-              <p className="mt-2 text-xs text-amber-600 dark:text-amber-400">
+              <p className="mt-2 msg-bubble msg-bubble-warning">
                 Limited to {freeDailyLimit} free logs per day. You&apos;ve
                 logged {dealsTodayCount} today. Come back tomorrow for more.
               </p>
             )}
             {presets.length > 0 && (
-              <div className="pt-2 space-y-2">
-                <h3 className="text-xs font-semibold text-slate-900 uppercase tracking-wide">
+              <div className="pt-4 space-y-3">
+                <h3 className="text-xs font-semibold text-heading uppercase tracking-wide">
                   Templates
                 </h3>
-                <div className="grid grid-cols-1 gap-2">
+                <div className="grid grid-cols-1 gap-3">
                   {presets.map((preset) => (
                     <button
                       key={preset.id}
-                      className="flex items-center justify-between px-3 py-2 text-left border border-slate-300 bg-white disabled:opacity-50"
+                      className="flex items-center justify-between px-4 py-3 text-left border border-border rounded-lg bg-white disabled:opacity-50 hover:border-primary transition-colors"
                       onClick={() => {
                         if (isAtFreeLimit) return;
                         addDealPreset(preset.name, preset.value);
@@ -542,14 +552,14 @@ export function Sidepanel() {
                       disabled={isAtFreeLimit}
                     >
                       <div className="flex flex-col">
-                        <span className="text-xs font-semibold text-slate-900">
+                        <span className="text-xs font-semibold text-heading">
                           {preset.name}
                         </span>
-                        <span className="text-[11px] text-slate-500">
+                        <span className="text-[11px] text-muted">
                           {formatCurrency(preset.value, isHushed)}
                         </span>
                       </div>
-                      <span className="material-symbols-outlined text-base text-black">
+                      <span className="material-symbols-outlined text-base text-primary">
                         add
                       </span>
                     </button>
@@ -561,32 +571,32 @@ export function Sidepanel() {
         )}
 
         {page === "settings" && (
-          <section className="px-5 pt-6 pb-4 space-y-4">
-            <div className="space-y-2">
-              <h2 className="text-slate-900 text-sm font-semibold">
+          <section className="pt-6 pb-8 space-y-7">
+            <div className="space-y-3">
+              <h2 className="text-heading text-base font-semibold">
                 Account &amp; plan
               </h2>
-              <GlassCard className="p-4 flex flex-col gap-2">
+              <GlassCard className="p-5 flex flex-col gap-4">
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col">
-                    <span className="text-xs font-semibold text-slate-700">
+                    <span className="text-xs font-semibold text-heading">
                       {isPaid ? "Unlimited (one-time)" : "Free plan"}
                     </span>
-                    <span className="text-[11px] text-slate-500">
+                    <span className="text-[11px] text-muted">
                       {isPaid
                         ? "Log unlimited deals per day — lifetime access."
                         : `Log up to ${freeDailyLimit} deals per day. Perfect for trying MetroRate.`}
                     </span>
                   </div>
-                  <span className="text-[11px] font-semibold text-slate-800">
+                  <span className="text-[11px] font-semibold text-heading">
                     {isPaid
                       ? "Unlimited"
                       : `${dealsTodayCount}/${freeDailyLimit} used`}
                   </span>
                 </div>
-                <div className="h-2 w-full rounded-none bg-slate-200 overflow-hidden">
+                <div className="h-2 w-full rounded-full bg-slate-100 overflow-hidden">
                   <div
-                    className="h-full bg-black"
+                    className="h-full bg-primary"
                     style={{
                       width: `${
                         isPaid
@@ -601,14 +611,15 @@ export function Sidepanel() {
                     }}
                   />
                 </div>
-                <p className="text-[11px] text-slate-500">
+                <p className="text-[11px] text-muted">
                   {isPaid
                     ? "Unlimited access is active in this browser (one-time purchase)."
-                    : "Need more? One-time payment on the website unlocks unlimited logs forever."}
+                    : "Unlock unlimited logs with a one-time payment."}
                 </p>
-                <div className="flex justify-between gap-2">
+                <div className="flex justify-between gap-3 pt-1">
                   <button
-                    className="px-3 py-1 text-[11px] font-semibold bg-black text-white border border-black hover:bg-white hover:text-black transition-colors"
+                    type="button"
+                    className="rounded-lg px-3 py-2 text-[11px] font-semibold border border-border text-heading bg-white hover:border-primary hover:text-primary transition-colors"
                     onClick={() =>
                       window.open(
                         LANDING_PAGE_URL,
@@ -617,37 +628,103 @@ export function Sidepanel() {
                       )
                     }
                   >
-                    Get unlimited (one-time)
+                    Add payment
                   </button>
                   <button
-                    className="px-3 py-1 text-[11px] font-semibold border border-black text-slate-700 bg-white hover:bg-black hover:text-white transition-colors"
+                    type="button"
+                    className="rounded-lg px-3 py-2 text-[11px] font-semibold border border-border text-heading bg-white hover:border-primary hover:text-primary transition-colors"
                     onClick={() => setIsPaid(true)}
                   >
-                    I&apos;ve purchased
+                    I already paid
                   </button>
                 </div>
               </GlassCard>
             </div>
 
-            <div className="space-y-2">
-              <h2 className="text-slate-900 text-sm font-semibold">
+            <div className="space-y-3">
+              <h2 className="text-heading text-base font-semibold">
+                Commission goal
+              </h2>
+              <p className="text-[11px] text-muted -mt-1">
+                Monthly target. Progress resets at the start of each month.
+              </p>
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex flex-col min-w-0">
+                  <span className="text-xs font-semibold text-muted uppercase tracking-wide">
+                    Goal amount
+                  </span>
+                  <span className="text-[11px] text-muted">
+                    Target commission for the current month.
+                  </span>
+                </div>
+                <input
+                  type="number"
+                  min={1}
+                  step={1}
+                  className="w-20 border border-border rounded-lg bg-white px-3 py-2 text-xs text-heading text-right focus:outline-none focus:ring-2 focus:ring-primary"
+                  value={goal}
+                  onChange={(e) => {
+                    const v = Number(e.target.value);
+                    if (!Number.isNaN(v) && v > 0) setGoal(Math.round(v));
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <h2 className="text-heading text-base font-semibold">
+                Quota (optional)
+              </h2>
+              <p className="text-[11px] text-muted -mt-1">
+                Monthly revenue target used to calculate attainment %.
+              </p>
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex flex-col min-w-0">
+                  <span className="text-xs font-semibold text-muted uppercase tracking-wide">
+                    Quota amount
+                  </span>
+                  <span className="text-[11px] text-muted">
+                    Revenue target for the current month.
+                  </span>
+                </div>
+                <input
+                  type="number"
+                  min={0}
+                  step={1}
+                  className="w-20 border border-border rounded-lg bg-white px-3 py-2 text-xs text-heading text-right focus:outline-none focus:ring-2 focus:ring-primary"
+                  value={quota || ""}
+                  onChange={(e) => {
+                    const v = Number(e.target.value);
+                    if (Number.isNaN(v) || v < 0) {
+                      setQuota(0);
+                      return;
+                    }
+                    setQuota(Math.round(v));
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <h2 className="text-heading text-base font-semibold">
                 Commission defaults
               </h2>
-              <div className="flex items-center justify-between">
-                <div className="flex flex-col">
-                  <span className="text-xs font-semibold text-slate-600 uppercase tracking-wide">
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex flex-col min-w-0">
+                  <span className="text-xs font-semibold text-muted uppercase tracking-wide">
                     Commission
                   </span>
-                  <span className="text-[11px] text-slate-500">
+                  <span className="text-[11px] text-muted">
                     Default rate for new deals (1–100%).
                   </span>
                 </div>
-                <span className="text-xs font-semibold text-slate-800">
+                <span className="text-xs font-semibold text-heading shrink-0">
                   {commissionPercent}%
                 </span>
               </div>
               <input
                 type="range"
+                className="mt-2 w-full accent-primary"
                 min={1}
                 max={100}
                 step={1}
@@ -655,88 +732,94 @@ export function Sidepanel() {
                 onChange={(e) =>
                   setCommissionRate(Number(e.target.value) / 100)
                 }
-                className="w-full accent-black"
               />
             </div>
 
-            <div className="space-y-2">
-              <h2 className="text-slate-900 text-sm font-semibold">
+            <div className="space-y-3">
+              <h2 className="text-heading text-base font-semibold">
                 Presets &amp; shortcuts
               </h2>
-              <div className="flex items-center justify-between">
-                <h2 className="text-slate-900 text-sm font-semibold">
-                  Saved deal templates
-                </h2>
-              </div>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  placeholder="Product name"
-                  className="flex-1 border border-slate-300 bg-white px-2 py-1.5 text-[11px] text-slate-900 placeholder:text-slate-400 focus:outline-none"
-                  value={newPresetName}
-                  onChange={(e) => setNewPresetName(e.target.value)}
-                />
-                <input
-                  type="number"
-                  min={0}
-                  placeholder="Amount"
-                  className="w-24 border border-slate-300 bg-white px-2 py-1.5 text-[11px] text-slate-900 placeholder:text-slate-400 focus:outline-none"
-                  value={newPresetValue}
-                  onChange={(e) => setNewPresetValue(e.target.value)}
-                />
-                <button
-                  className="bg-black px-3 py-1.5 text-[11px] font-semibold text-white border border-black disabled:opacity-50 hover:bg-white hover:text-black transition-colors"
-                  onClick={handleAddPreset}
-                  disabled={!newPresetName.trim() || !newPresetValue.trim()}
-                >
-                  Add
-                </button>
-              </div>
-              <div className="mt-2 space-y-1 max-h-40 overflow-y-auto pr-1">
-                {presets.map((preset) => (
-                  <div
-                    key={preset.id}
-                    className="flex items-center justify-between border border-slate-300 bg-white px-2 py-1.5 text-[11px]"
-                  >
-                    <div className="flex flex-col">
-                      <span className="font-semibold text-slate-900">
-                        {preset.name}
-                      </span>
-                      <span className="text-slate-500">
-                        {formatCurrency(preset.value, isHushed)}
-                      </span>
-                    </div>
+              <GlassCard className="p-5 flex flex-col gap-4">
+                <div className="flex flex-col gap-1.5">
+                  <span className="text-xs font-semibold text-muted uppercase tracking-wide">
+                    Saved deal templates
+                  </span>
+                  <span className="text-[11px] text-muted">
+                    Add templates to log deals faster from the Log deal tab.
+                  </span>
+                </div>
+                <div className="space-y-3 max-h-52 overflow-y-auto pr-1 scrollbar-hide">
+                  <div className="flex items-center justify-between gap-2 border border-border rounded-lg bg-white px-3 py-2 text-[11px] shadow-[0_1px_3px_rgba(0,0,0,0.08)]">
+                    <input
+                      type="text"
+                      placeholder="Product name"
+                      className="flex-1 min-w-0 border-0 bg-transparent px-0 py-0 text-[11px] text-heading placeholder:text-muted focus:outline-none focus:ring-0"
+                      value={newPresetName}
+                      onChange={(e) => setNewPresetName(e.target.value)}
+                    />
+                    <input
+                      type="number"
+                      min={0}
+                      placeholder="Amount"
+                      className="w-20 min-w-0 border-0 bg-transparent px-0 py-0 text-right text-[11px] text-heading placeholder:text-muted focus:outline-none focus:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                      value={newPresetValue}
+                      onChange={(e) => setNewPresetValue(e.target.value)}
+                    />
                     <button
-                      className="text-[10px] text-slate-500 hover:text-black"
-                      onClick={() => removePreset(preset.id)}
+                      type="button"
+                      className="rounded-lg bg-primary px-2.5 py-1 text-[10px] font-semibold text-primary-content hover:bg-primary-dark transition-colors shrink-0 disabled:opacity-50"
+                      onClick={handleAddPreset}
+                      disabled={!newPresetName.trim() || !newPresetValue.trim()}
                     >
-                      Remove
+                      Add
                     </button>
                   </div>
-                ))}
-                {presets.length === 0 && (
-                  <p className="text-[11px] text-slate-500">
-                    No products yet. Add one above to power Simple View.
-                  </p>
-                )}
-              </div>
+                  {presets.map((preset) => (
+                    <div
+                      key={preset.id}
+                      className="flex items-center justify-between border border-border rounded-lg bg-white px-3 py-2 text-[11px] shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
+                    >
+                      <div className="flex flex-col min-w-0">
+                        <span className="font-semibold text-heading truncate">
+                          {preset.name}
+                        </span>
+                        <span className="text-muted">
+                          {formatCurrency(preset.value, isHushed)}
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        className="text-[10px] text-muted hover:text-primary transition-colors shrink-0 ml-2"
+                        onClick={() => removePreset(preset.id)}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                  {presets.length === 0 && (
+                    <p className="text-[11px] text-muted msg-bubble msg-bubble-info">
+                      No templates yet. Add one above to reuse for quick logging.
+                    </p>
+                  )}
+                </div>
+              </GlassCard>
             </div>
 
-            <div className="space-y-2 pt-2">
-              <h2 className="text-slate-900 text-sm font-semibold">
+            <div className="space-y-3">
+              <h2 className="text-heading text-base font-semibold">
                 Privacy
               </h2>
-              <div className="flex items-center justify-between">
-                <div className="flex flex-col">
-                  <span className="text-xs font-semibold text-slate-600 uppercase tracking-wide">
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex flex-col min-w-0">
+                  <span className="text-xs font-semibold text-muted uppercase tracking-wide">
                     Visibility
                   </span>
-                  <span className="text-[11px] text-slate-500">
+                  <span className="text-[11px] text-muted">
                     Blur commission amounts when you need privacy.
                   </span>
                 </div>
                 <button
-                  className="inline-flex items-center gap-1 px-3 py-1 text-xs border border-black bg-white text-slate-700 hover:bg-black hover:text-white transition-colors"
+                  className="rounded-lg inline-flex items-center gap-1 px-3 py-1 text-xs border border-border bg-white text-heading hover:border-primary hover:text-primary transition-colors"
                   onClick={() => setIsHushed((v) => !v)}
                 >
                   {isHushed ? (
@@ -752,7 +835,7 @@ export function Sidepanel() {
                   )}
                 </button>
               </div>
-              <p className="text-[11px] text-slate-500">
+              <p className="text-[11px] text-muted mt-1">
                 Your data stays in Chrome storage; nothing is sent to our servers.
               </p>
             </div>
@@ -761,24 +844,24 @@ export function Sidepanel() {
       </main>
 
       {isAtFreeLimit && (
-        <div className="absolute bottom-0 left-0 w-full z-20 border-t border-black bg-white px-5 py-4">
-          <div className="flex items-center justify-between gap-4">
+        <div className="absolute bottom-0 left-0 w-full z-20 border-t border-border bg-white px-5 py-5 shadow-[0_-1px_3px_rgba(0,0,0,0.08)]">
+          <div className="flex items-center justify-between gap-5">
             <div>
-              <h3 className="text-sm font-bold text-slate-900">
+              <h3 className="text-sm font-bold text-heading">
                 Daily limit reached
               </h3>
-              <p className="text-[11px] text-slate-600 mt-1">
+              <p className="text-[11px] text-muted mt-1">
                 You&apos;ve used all {freeDailyLimit} free logs for today. Your
                 existing data is saved — new deals can be added again tomorrow.
               </p>
             </div>
             <button
-              className="whitespace-nowrap bg-black px-4 py-2 text-xs font-semibold text-white border border-black hover:bg-white hover:text-black transition-colors"
+              className="whitespace-nowrap rounded-lg bg-primary px-4 py-2 text-xs font-semibold text-primary-content hover:bg-primary-dark transition-colors"
               onClick={() =>
                 window.open(LANDING_PAGE_URL, "_blank", "noopener,noreferrer")
               }
             >
-              Get unlimited
+              Add payment
             </button>
           </div>
         </div>

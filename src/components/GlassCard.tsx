@@ -8,7 +8,7 @@ type GlassCardProps = {
 export function GlassCard({ className = "", children }: GlassCardProps) {
   return (
     <div
-      className={`glass-card ${className}`}
+      className={`glass-card border-border rounded-xl ${className}`}
     >
       {children}
     </div>

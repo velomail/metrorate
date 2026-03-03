@@ -1,3 +1,8 @@
+// Apply store URL from config (from urls.json via npm run sync-urls)
+document.querySelectorAll(".store-link").forEach(function (a) {
+  if (window.METRORATE_URLS?.chromeWebStore) a.href = window.METRORATE_URLS.chromeWebStore;
+});
+
 document.getElementById("buy-button")?.addEventListener("click", () => {
   document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" });
 });

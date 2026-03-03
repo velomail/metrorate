@@ -19,6 +19,11 @@ const STORAGE_KEY_HUSHED = "metrorate:isHushed";
 const STORAGE_KEY_RATE = "metrorate:rate";
 const STORAGE_KEY_PRESETS = "metrorate:presets";
 const STORAGE_KEY_PAID = "metrorate:isPaid";
+const STORAGE_KEY_GOAL = "metrorate:goal";
+const STORAGE_KEY_QUOTA = "metrorate:quota";
+
+const DEFAULT_GOAL = 650;
+const DEFAULT_QUOTA = 0;
 
 const DAILY_FREE_DEAL_LIMIT = 10;
 
@@ -94,6 +99,8 @@ export function useCommission() {
   const [commissionRate, setCommissionRate] = useState(DEFAULT_RATE);
   const [isLoading, setIsLoading] = useState(true);
   const [isPaid, setIsPaid] = useState(false);
+  const [goal, setGoal] = useState(DEFAULT_GOAL);
+  const [quota, setQuota] = useState(DEFAULT_QUOTA);
 
   useEffect(() => {
     let cancelled = false;
@@ -104,13 +111,17 @@ export function useCommission() {
         storedHushed,
         storedRate,
         storedPresets,
-        storedPaid
+        storedPaid,
+        storedGoal,
+        storedQuota
       ] = await Promise.all([
         loadFromStorage<Deal[]>(STORAGE_KEY_DEALS, []),
         loadFromStorage<boolean>(STORAGE_KEY_HUSHED, false),
         loadFromStorage<number>(STORAGE_KEY_RATE, DEFAULT_RATE),
         loadFromStorage<ProductPreset[]>(STORAGE_KEY_PRESETS, DEFAULT_PRESETS),
-        loadFromStorage<boolean>(STORAGE_KEY_PAID, false)
+        loadFromStorage<boolean>(STORAGE_KEY_PAID, false),
+        loadFromStorage<number>(STORAGE_KEY_GOAL, DEFAULT_GOAL),
+        loadFromStorage<number>(STORAGE_KEY_QUOTA, DEFAULT_QUOTA)
       ]);
 
       if (cancelled) return;
@@ -119,6 +130,16 @@ export function useCommission() {
       setCommissionRate(storedRate);
       setPresets(storedPresets);
       setIsPaid(storedPaid);
+      setGoal(
+        typeof storedGoal === "number" && storedGoal > 0
+          ? storedGoal
+          : DEFAULT_GOAL
+      );
+      setQuota(
+        typeof storedQuota === "number" && storedQuota > 0
+          ? storedQuota
+          : DEFAULT_QUOTA
+      );
       setIsLoading(false);
     })();
 
@@ -151,6 +172,16 @@ export function useCommission() {
     if (isLoading) return;
     saveToStorage(STORAGE_KEY_PAID, isPaid);
   }, [isPaid, isLoading]);
+
+  useEffect(() => {
+    if (isLoading) return;
+    saveToStorage(STORAGE_KEY_GOAL, goal);
+  }, [goal, isLoading]);
+
+  useEffect(() => {
+    if (isLoading) return;
+    saveToStorage(STORAGE_KEY_QUOTA, quota);
+  }, [quota, isLoading]);
 
   const addDealFromInput = useCallback(
     (input: string) => {
@@ -226,6 +257,40 @@ export function useCommission() {
     [deals]
   );
 
+  const valueThisMonth = useMemo(() => {
+    const now = new Date();
+    return deals.reduce((sum, deal) => {
+      const created = new Date(deal.createdAt);
+      if (
+        created.getFullYear() === now.getFullYear() &&
+        created.getMonth() === now.getMonth()
+      ) {
+        return sum + deal.value;
+      }
+      return sum;
+    }, 0);
+  }, [deals]);
+
+  const commissionThisMonth = useMemo(() => {
+    const now = new Date();
+    return deals.reduce((sum, deal) => {
+      const created = new Date(deal.createdAt);
+      if (
+        created.getFullYear() === now.getFullYear() &&
+        created.getMonth() === now.getMonth()
+      ) {
+        return sum + deal.commission;
+      }
+      return sum;
+    }, 0);
+  }, [deals]);
+
+  const attainmentPercent = useMemo(() => {
+    if (!quota || quota <= 0) return null;
+    if (valueThisMonth <= 0) return 0;
+    return Math.round((valueThisMonth / quota) * 100);
+  }, [quota, valueThisMonth]);
+
   const dealsTodayCount = useMemo(() => {
     const today = new Date();
     return deals.reduce((count, deal) => {
@@ -254,6 +319,11 @@ export function useCommission() {
     clearDeals,
     totalValue,
     totalCommission,
+    valueThisMonth,
+    commissionThisMonth,
+    quota,
+    setQuota,
+    attainmentPercent,
     dealsTodayCount,
     freeDailyLimit: DAILY_FREE_DEAL_LIMIT,
     isHushed,
@@ -262,6 +332,8 @@ export function useCommission() {
     setIsPaid,
     commissionRate,
     setCommissionRate,
+    goal,
+    setGoal,
     isAtFreeLimit,
     isLoading
   };

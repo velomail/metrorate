@@ -9,9 +9,18 @@ body,
 }
 
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background-color: #ffffff;
-  color: #000000;
+  color: #1a1a2e;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Text hierarchy – matches landing (#1a1a2e / #64748b) */
+.text-heading {
+  color: #1a1a2e;
+}
+.text-muted {
+  color: #64748b;
 }
 
 h1,
@@ -20,7 +29,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Playfair Display", Georgia, serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 code,
@@ -30,11 +39,11 @@ kbd {
     Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
- .glass-card {
+.glass-card {
   background-color: #ffffff;
-  border: 1px solid #000000;
-  border-radius: 0;
-  box-shadow: none;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 @keyframes metrorate-pulse {
@@ -54,7 +63,40 @@ kbd {
 }
 
 button {
-  border-radius: 0;
+  border-radius: 8px;
+}
+
+button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #2563eb;
+}
+
+a:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #2563eb;
+}
+
+/* Message bubbles – error / warning in new style */
+.msg-bubble {
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+.msg-bubble-error {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+}
+.msg-bubble-warning {
+  background-color: #fffbeb;
+  border: 1px solid #fde68a;
+  color: #b45309;
+}
+.msg-bubble-info {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #64748b;
 }
 
 .scrollbar-hide::-webkit-scrollbar {
