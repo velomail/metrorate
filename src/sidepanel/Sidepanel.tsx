@@ -155,147 +155,340 @@ export function Sidepanel() {
   return (
     <div className="relative flex h-full w-full max-w-[360px] flex-col overflow-hidden bg-white text-heading">
       {showOnboarding && (
-        <div className="absolute inset-0 z-30 flex flex-col bg-white dark:bg-background-dark/95 backdrop-blur-sm">
-          <div className="flex items-center justify-between px-4 pt-3 pb-1 text-[11px] text-muted">
-            <span>Welcome to MetroRate</span>
-            <button
-              className="text-[10px] text-muted hover:text-primary underline decoration-dotted transition-colors"
-              onClick={completeOnboarding}
-            >
-              Skip
-            </button>
-          </div>
-
-          <div className="flex-1 min-h-0 flex flex-col justify-center px-5 py-6 overflow-y-auto">
-            {onboardingStep === 0 && (
-              <GlassCard className="p-6 sm:p-8 flex flex-col gap-4">
-                <div className="w-12 h-12 rounded-xl bg-[#dbeafe] flex items-center justify-center">
-                  <span className="material-symbols-outlined text-2xl text-primary">trending_up</span>
-                </div>
-                <h2 className="text-lg font-semibold text-heading">
-                  See your commission at a glance
-                </h2>
-                <p className="text-sm text-muted">
-                  MetroRate lives in your browser side panel so you always see
-                  your commission next to your pipeline.
-                </p>
-                <p className="text-sm text-muted">
-                  Add a deal like <span className="font-mono text-heading">Nike 50k</span>{" "}
-                  and MetroRate instantly calculates the commission for you.
-                </p>
-              </GlassCard>
-            )}
-
-            {onboardingStep === 1 && (
-              <GlassCard className="p-6 sm:p-8 flex flex-col gap-4">
-                <div className="w-12 h-12 rounded-xl bg-[#dbeafe] flex items-center justify-center">
-                  <span className="material-symbols-outlined text-2xl text-primary">checklist</span>
-                </div>
-                <h2 className="text-lg font-semibold text-heading">
-                  How MetroRate works
-                </h2>
-                <p className="text-sm text-muted">
-                  <span className="font-semibold text-heading">1.</span> Add a deal in the
-                  Log deal tab (e.g.{" "}
-                  <span className="font-mono text-heading">Nike 50k</span>).
-                </p>
-                <p className="text-sm text-muted">
-                  <span className="font-semibold text-heading">2.</span> MetroRate applies
-                  your commission rate and tracks volume and earnings.
-                </p>
-                <p className="text-sm text-muted">
-                  <span className="font-semibold text-heading">3.</span> Watch your goal and
-                  daily-usage bars move on the Dashboard.
-                </p>
+        <div className="absolute inset-0 z-30 flex flex-col bg-[#f9fafb]">
+          {onboardingStep === 0 ? (
+            <div className="flex h-full w-full flex-col">
+              {/* Top app bar */}
+              <div className="flex items-center bg-transparent px-4 pt-4 pb-2 justify-between">
                 <button
                   type="button"
-                  className="rounded-lg border border-border px-4 py-2 text-sm font-semibold text-heading bg-white hover:border-primary hover:text-primary transition-colors"
-                  onClick={() => {
-                    completeOnboarding();
-                    setPage("log");
-                  }}
-                >
-                  Try it
-                </button>
-              </GlassCard>
-            )}
-
-            {onboardingStep === 2 && (
-              <GlassCard className="p-6 sm:p-8 flex flex-col gap-4">
-                <div className="w-12 h-12 rounded-xl bg-[#dbeafe] flex items-center justify-center">
-                  <span className="material-symbols-outlined text-2xl text-primary">verified_user</span>
-                </div>
-                <h2 className="text-lg font-semibold text-heading">
-                  Free plan, upgrade &amp; privacy
-                </h2>
-                <p className="text-sm text-muted">
-                  MetroRate gives you {freeDailyLimit} free logs per day. When
-                  you hit the limit, your data remains visible and you can add
-                  more deals tomorrow.
-                </p>
-                <p className="text-sm text-muted">
-                  Your deals are stored in Chrome storage only — nothing leaves
-                  your browser without your consent.
-                </p>
-                <button
-                  type="button"
-                  className="rounded-lg border border-border px-4 py-2 text-sm font-semibold text-heading bg-white hover:border-primary hover:text-primary transition-colors"
-                  onClick={() =>
-                    window.open(LANDING_PAGE_URL, "_blank", "noopener,noreferrer")
-                  }
-                >
-                  Add payment
-                </button>
-              </GlassCard>
-            )}
-          </div>
-
-          <div className="pb-4 px-5 flex items-center justify-between shrink-0">
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-muted">
-                Step {onboardingStep + 1} of 3
-              </span>
-              <div className="flex gap-2">
-              {[0, 1, 2].map((i) => (
-                <button
-                  key={i}
-                  className={`rounded-full transition-all ${
-                    onboardingStep === i
-                      ? "w-5 h-2 bg-primary"
-                      : "w-2 h-2 bg-border"
-                  }`}
-                  onClick={() => setOnboardingStep(i)}
-                  aria-label={`Go to slide ${i + 1}`}
-                />
-              ))}
-              </div>
-            </div>
-            <div className="flex gap-2">
-              {onboardingStep > 0 && (
-                <button
-                  className="rounded-lg border border-border px-3 py-1 text-[11px] text-heading hover:border-primary hover:text-primary transition-colors"
-                  onClick={() => setOnboardingStep((s) => Math.max(0, s - 1))}
-                >
-                  Back
-                </button>
-              )}
-              {onboardingStep < 2 ? (
-                <button
-                  className="rounded-lg bg-primary px-3 py-1 text-[11px] font-semibold text-primary-content hover:bg-primary-dark transition-colors"
-                  onClick={() => setOnboardingStep((s) => Math.min(2, s + 1))}
-                >
-                  Next
-                </button>
-              ) : (
-                <button
-                  className="rounded-lg bg-primary px-3 py-1 text-[11px] font-semibold text-primary-content hover:bg-primary-dark transition-colors"
+                  className="flex size-10 items-center justify-start text-slate-900"
                   onClick={completeOnboarding}
                 >
-                  Get started
+                  <span className="material-symbols-outlined text-2xl">close</span>
                 </button>
-              )}
+                <h2 className="text-slate-900 text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-10">
+                  Onboarding
+                </h2>
+              </div>
+
+              {/* Mockup area */}
+              <div className="flex-1 flex flex-col items-center justify-center px-6 py-4">
+                <div className="w-full max-w-sm">
+                  <div className="relative w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100">
+                    {/* Mockup header */}
+                    <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
+                      <div className="h-3 w-24 bg-primary/20 rounded-full" />
+                      <span className="material-symbols-outlined text-primary text-xl">
+                        bolt
+                      </span>
+                    </div>
+
+                    {/* Quick Log card */}
+                    <div className="p-4">
+                      <div className="bg-primary/5 rounded-xl p-4 border border-primary/20">
+                        <div className="flex items-center gap-3">
+                          <span className="material-symbols-outlined text-primary">
+                            keyboard
+                          </span>
+                          <div className="flex-1">
+                            <div className="text-[10px] font-semibold text-primary uppercase tracking-[0.16em]">
+                              Quick Log
+                            </div>
+                            <div className="text-lg font-semibold text-slate-900 mt-1">
+                              Nike 50k
+                            </div>
+                          </div>
+                          <div className="bg-primary p-2 rounded-lg text-white">
+                            <span className="material-symbols-outlined text-base">
+                              add
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Recent logs */}
+                    <div className="px-4 pb-4">
+                      <div className="text-xs font-semibold text-slate-400 mb-3 uppercase tracking-wide">
+                        Recent Logs
+                      </div>
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
+                          <div className="flex items-center gap-3">
+                            <div className="w-9 h-9 rounded-full bg-primary/15 flex items-center justify-center">
+                              <span className="material-symbols-outlined text-primary text-lg">
+                                shopping_bag
+                              </span>
+                            </div>
+                            <div>
+                              <div className="text-sm font-semibold text-slate-900">
+                                Apple Inc.
+                              </div>
+                              <div className="text-[11px] text-slate-500">
+                                2 minutes ago
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-sm font-bold text-slate-900">
+                            $12,400
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
+                          <div className="flex items-center gap-3">
+                            <div className="w-9 h-9 rounded-full bg-slate-200 flex items-center justify-center">
+                              <span className="material-symbols-outlined text-slate-500 text-lg">
+                                store
+                              </span>
+                            </div>
+                            <div>
+                              <div className="text-sm font-semibold text-slate-900">
+                                Starbucks
+                              </div>
+                              <div className="text-[11px] text-slate-500">
+                                1 hour ago
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-sm font-bold text-slate-900">
+                            $3,200
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Subtle border overlay */}
+                    <div className="pointer-events-none absolute inset-0 rounded-2xl border border-primary/5" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Text content */}
+              <div className="px-6 pt-2 pb-1 text-center">
+                <h2 className="text-[22px] font-black text-slate-900 leading-tight tracking-tight mb-2">
+                  Log Deals in Seconds
+                </h2>
+                <p className="text-sm text-slate-500 leading-relaxed max-w-xs mx-auto">
+                  The fastest way for sales reps to track commissions. Just type
+                  and go.
+                </p>
+              </div>
+
+              {/* Dots */}
+              <div className="flex w-full items-center justify-center gap-2 py-4">
+                <div className="h-1.5 w-6 rounded-full bg-primary" />
+                <div className="h-1.5 w-1.5 rounded-full bg-slate-200" />
+                <div className="h-1.5 w-1.5 rounded-full bg-slate-200" />
+              </div>
+
+              {/* Primary CTA */}
+              <div className="px-6 pb-6">
+                <button
+                  type="button"
+                  className="w-full bg-primary text-white py-4 rounded-xl text-base font-bold shadow-lg flex items-center justify-center gap-2 hover:bg-primary-dark transition-all"
+                  onClick={() => setOnboardingStep(1)}
+                >
+                  <span>Next</span>
+                  <span className="material-symbols-outlined text-lg">
+                    arrow_forward
+                  </span>
+                </button>
+              </div>
             </div>
-          </div>
+          ) : onboardingStep === 1 ? (
+            <div className="flex h-full w-full flex-col">
+              {/* Top nav: back + Skip */}
+              <div className="flex items-center justify-between p-4 bg-transparent">
+                <button
+                  type="button"
+                  className="flex size-12 items-center justify-start text-slate-900 hover:bg-slate-200/50 rounded-full transition-colors"
+                  onClick={() => setOnboardingStep(0)}
+                >
+                  <span className="material-symbols-outlined text-2xl">arrow_back</span>
+                </button>
+                <button
+                  type="button"
+                  className="text-primary font-semibold px-4 py-2"
+                  onClick={completeOnboarding}
+                >
+                  Skip
+                </button>
+              </div>
+
+              {/* Mockup + content */}
+              <div className="flex flex-1 flex-col items-center justify-center px-6 pb-4 min-h-0">
+                <div className="w-full max-w-sm flex flex-col flex-1 min-h-0 justify-center">
+                  {/* Mockup card */}
+                  <div className="bg-white rounded-3xl shadow-xl overflow-hidden mb-6 border border-slate-200 flex flex-col">
+                    {/* Mockup header */}
+                    <div className="p-5 border-b border-slate-100">
+                      <div className="h-3 w-24 bg-slate-100 rounded mb-2" />
+                      <div className="h-6 w-40 bg-slate-200 rounded" />
+                    </div>
+
+                    {/* Commission card */}
+                    <div className="p-5 flex flex-col gap-4">
+                      <div className="p-5 rounded-2xl bg-primary/10 border border-primary/20">
+                        <div className="flex justify-between items-start mb-4">
+                          <div>
+                            <p className="text-sm font-medium text-primary">Total Commission</p>
+                            <p className="text-2xl font-bold text-slate-900 mt-1">$12,450.00</p>
+                          </div>
+                          <div className="bg-emerald-500/20 text-emerald-600 px-2 py-1 rounded text-xs font-bold">
+                            +15.4%
+                          </div>
+                        </div>
+                        <div className="space-y-2 mb-4">
+                          <div className="flex justify-between text-xs font-semibold text-slate-500">
+                            <span>Monthly Goal</span>
+                            <span>82%</span>
+                          </div>
+                          <div className="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
+                            <div className="h-full bg-primary rounded-full w-[82%]" />
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <div className="flex justify-between text-xs font-semibold text-slate-500">
+                            <span>Sales Quota</span>
+                            <span>65%</span>
+                          </div>
+                          <div className="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
+                            <div className="h-full bg-primary/60 rounded-full w-[65%]" />
+                          </div>
+                        </div>
+                      </div>
+                      {/* List item mockup */}
+                      <div className="flex items-center gap-4 p-4 rounded-xl bg-slate-50">
+                        <div className="size-10 rounded-lg bg-primary flex items-center justify-center text-white shrink-0">
+                          <span className="material-symbols-outlined text-xl">trending_up</span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="h-3 w-24 bg-slate-200 rounded mb-2" />
+                          <div className="h-2 w-16 bg-slate-100 rounded" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Onboarding text */}
+                <div className="text-center max-w-md px-2">
+                  <h2 className="text-slate-900 text-2xl font-bold leading-tight mb-3">
+                    Visualize Your Goals
+                  </h2>
+                  <p className="text-slate-600 text-sm leading-relaxed">
+                    Monitor your monthly commission, sales quota, and daily usage at a glance.
+                  </p>
+                </div>
+              </div>
+
+              {/* Dots */}
+              <div className="flex w-full items-center justify-center gap-2 py-4">
+                <div className="h-1.5 w-1.5 rounded-full bg-slate-300" />
+                <div className="h-1.5 w-6 rounded-full bg-primary" />
+                <div className="h-1.5 w-1.5 rounded-full bg-slate-300" />
+              </div>
+
+              {/* Next */}
+              <div className="px-6 pb-6">
+                <button
+                  type="button"
+                  className="w-full h-14 bg-primary hover:bg-primary/90 text-white font-bold text-base rounded-xl transition-all shadow-lg flex items-center justify-center gap-2"
+                  onClick={() => setOnboardingStep(2)}
+                >
+                  <span>Next</span>
+                  <span className="material-symbols-outlined text-xl">arrow_forward</span>
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="relative flex h-full w-full flex-col overflow-hidden bg-[#f9fafb]">
+              {/* TopAppBar: back + title (mt-12 equivalent via top bar height) */}
+              <div className="flex items-center bg-white p-4 justify-between shrink-0">
+                <button
+                  type="button"
+                  className="flex size-12 shrink-0 items-center justify-start text-gray-900 cursor-pointer"
+                  onClick={() => setOnboardingStep(1)}
+                >
+                  <span className="material-symbols-outlined text-2xl">arrow_back</span>
+                </button>
+                <h2 className="text-gray-900 text-lg font-bold leading-tight tracking-tight flex-1 text-center pr-12">
+                  Onboarding
+                </h2>
+              </div>
+
+              {/* Mockup container: white card, rounded-2xl, shadow-xl, mb-12 */}
+              <div className="px-6 pt-6 flex-1 min-h-0 flex flex-col">
+                <div className="bg-white border border-gray-100 rounded-2xl shadow-xl overflow-hidden mb-12">
+                  {/* Mockup header: px-4 py-3 border-b border-gray-50 */}
+                  <div className="px-4 py-3 border-b border-gray-50 flex items-center justify-between">
+                    <span className="text-xs font-bold text-primary tracking-widest uppercase">
+                      Settings Preview
+                    </span>
+                    <span className="material-symbols-outlined text-gray-400">settings</span>
+                  </div>
+                  <div className="p-4">
+                    {/* Privacy Toggle Row */}
+                    <div className="flex items-center justify-between py-3 border-b border-gray-200">
+                      <div className="flex flex-col">
+                        <p className="text-gray-900 text-sm font-semibold">Privacy Mode</p>
+                        <p className="text-gray-500 text-xs">Mask earnings in public</p>
+                      </div>
+                      <div className="w-10 h-6 bg-primary rounded-full relative flex items-center px-1">
+                        <div className="w-4 h-4 bg-white rounded-full ml-auto" />
+                      </div>
+                    </div>
+                    {/* Commission Section */}
+                    <div className="flex flex-col py-4">
+                      <p className="text-gray-900 text-sm font-semibold mb-3">Commission Goals</p>
+                      <div className="space-y-3">
+                        <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                          <div className="h-full bg-primary w-3/4 rounded-full" />
+                        </div>
+                        <div className="flex justify-between text-[10px] text-gray-500 font-medium">
+                          <span>$2,450 EARNED</span>
+                          <span>$3,000 GOAL</span>
+                        </div>
+                      </div>
+                    </div>
+                    {/* Decorative Elements */}
+                    <div className="mt-2 space-y-2">
+                      <div className="h-4 bg-gray-100 rounded-lg w-1/2" />
+                      <div className="h-4 bg-gray-100 rounded-lg w-2/3" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Typography: 2xl black headline, sm gray-500 body, px-6 */}
+              <div className="px-6 flex flex-col flex-grow">
+                <h2 className="text-2xl font-black text-gray-900 text-center mb-4 leading-tight">
+                  Secure &amp; Private
+                </h2>
+                <p className="text-sm text-gray-500 text-center leading-relaxed mb-12">
+                  Toggle Privacy Mode to mask earnings in public. Set your own commission rates and presets in Settings to tailor the experience to your workflow.
+                </p>
+              </div>
+
+              {/* Pagination: gap-2 mb-8; active w-6 h-1.5, inactive w-1.5 h-1.5 bg-gray-200 */}
+              <div className="px-6 pb-8 flex flex-col items-center">
+                <div className="flex justify-center gap-2 mb-8">
+                  <div className="w-1.5 h-1.5 rounded-full bg-gray-200" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-gray-200" />
+                  <div className="w-6 h-1.5 rounded-full bg-primary" />
+                </div>
+                <button
+                  type="button"
+                  className="w-full bg-primary text-white py-4 rounded-xl text-base font-bold shadow-lg flex items-center justify-center gap-2 hover:bg-primary-dark transition-all"
+                  onClick={completeOnboarding}
+                >
+                  Get Started
+                </button>
+                <div className="h-2" />
+              </div>
+            </div>
+          )}
         </div>
       )}
 
