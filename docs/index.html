@@ -1,169 +1,568 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>MetroRate – Commission tracker for Chrome</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <header class="nav">
-    <div class="logo-wrap">
-      <span class="logo-icon" aria-hidden="true">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      </span>
-      <span class="logo">MetroRate</span>
+
+<html class="light" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>MetroRate - Sales Commission Tracking</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#0d7ff2",
+              "background-light": "#f5f7f8",
+              "background-dark": "#101922"
+            },
+            fontFamily: {
+              display: ["Inter"]
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px"
+            }
+          }
+        }
+      };
+    </script>
+  </head>
+  <body
+    class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased transition-colors duration-300"
+  >
+    <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+      <div class="layout-container flex h-full grow flex-col">
+        <!-- TopNavBar -->
+        <header
+          class="sticky top-0 z-50 flex items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-6 lg:px-20 py-4"
+        >
+          <div class="flex items-center gap-3">
+            <div
+              class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white shadow-lg shadow-primary/20"
+            >
+              <span class="material-symbols-outlined text-2xl">rocket_launch</span>
+            </div>
+            <h2
+              class="text-xl font-black tracking-tight text-slate-900 dark:text-white"
+            >
+              MetroRate
+            </h2>
+          </div>
+          <div class="hidden md:flex flex-1 justify-end gap-10">
+            <nav class="flex items-center gap-8">
+              <a
+                class="text-sm font-semibold hover:text-primary transition-colors"
+                href="#features"
+                >Features</a
+              >
+              <a
+                class="text-sm font-semibold hover:text-primary transition-colors"
+                href="#pricing"
+                >Pricing</a
+              >
+              <a
+                class="text-sm font-semibold hover:text-primary transition-colors"
+                href="mailto:metrorateextension@gmail.com"
+                >Support</a
+              >
+            </nav>
+            <a
+              class="store-link flex h-11 items-center justify-center rounded-xl bg-primary px-6 text-sm font-bold text-white shadow-lg shadow-primary/30 hover:bg-primary/90 transition-all active:scale-95"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Add to Chrome
+            </a>
+          </div>
+          <button
+            class="md:hidden flex p-2 text-slate-900 dark:text-white"
+            type="button"
+          >
+            <span class="material-symbols-outlined">menu</span>
+          </button>
+        </header>
+        <main class="flex-1">
+          <!-- Hero Section -->
+          <section class="mx-auto max-w-7xl px-6 lg:px-20 py-16 lg:py-24">
+            <div
+              class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center"
+            >
+              <div class="flex flex-col gap-8">
+                <div
+                  class="inline-flex w-fit items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-primary dark:bg-primary/20"
+                >
+                  <span class="material-symbols-outlined text-sm"
+                    >flash_on</span
+                  >
+                  <span>Fast-Track Your Sales Workflow</span>
+                </div>
+                <h1
+                  class="text-5xl font-black leading-[1.1] tracking-tight text-slate-900 dark:text-white lg:text-7xl"
+                >
+                  Log deals in seconds, track commission in real-time.
+                </h1>
+                <p
+                  class="text-lg leading-relaxed text-slate-600 dark:text-slate-400"
+                >
+                  The lightning-fast browser extension for high-performing sales
+                  teams. Capture revenue data instantly without leaving your
+                  workflow.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                  <a
+                    class="store-link flex h-14 items-center justify-center rounded-xl bg-primary px-8 text-base font-bold text-white shadow-xl shadow-primary/30 hover:bg-primary/90 transition-all hover:-translate-y-0.5"
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Add to Chrome — It's Free
+                  </a>
+                  <button
+                    class="flex h-14 items-center justify-center rounded-xl border border-slate-200 bg-white px-8 text-base font-bold text-slate-900 shadow-sm hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-white dark:hover:bg-slate-800 transition-all"
+                    type="button"
+                    id="buy-button"
+                  >
+                    Watch Demo
+                  </button>
+                </div>
+                <div class="flex items-center gap-4 text-sm text-slate-500">
+                  <div class="flex -space-x-2">
+                    <div
+                      class="h-8 w-8 rounded-full border-2 border-white bg-slate-200 dark:border-slate-900"
+                    ></div>
+                    <div
+                      class="h-8 w-8 rounded-full border-2 border-white bg-slate-300 dark:border-slate-900"
+                    ></div>
+                    <div
+                      class="h-8 w-8 rounded-full border-2 border-white bg-slate-400 dark:border-slate-900"
+                    ></div>
+                  </div>
+                  <span class="font-medium"
+                    >Trusted by 2,000+ sales pros</span
+                  >
+                </div>
+              </div>
+              <div class="relative">
+                <div
+                  class="absolute -inset-4 bg-primary/20 blur-3xl rounded-full opacity-30 dark:opacity-10"
+                ></div>
+                <div
+                  class="relative overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-2xl dark:border-slate-700 dark:bg-slate-800"
+                >
+                  <img
+                    class="h-full w-full object-cover"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEBpw2lF3Z9fj3UITZh67pD0iDNq2uGV4hbsxJ0ugS4E-yVkiDpYGFQXDZgBOyZeybhycImruRCf7dnO9yknnC4KLCULs8IFJn6fRkmutpjbQuSA928mL2diKs4j2QtB1SJSaPBmHqlTMt9ejmaPYyS4og5caF561qURLYmysHTLALPobRCkIzPC0BlPTfCYADetazfRvTlrNnDY6K2tM34l4NwVdKuEJbZGRYjDgJshH2dYHFWeou49vutuJaBL5AolTT8vD6w0aV"
+                    alt="Modern sales software extension interface mockup showing log tab"
+                  />
+                  <!-- Interface Overlay Mockup Representing SCREEN_39 -->
+                  <div
+                    class="absolute inset-0 flex items-center justify-center bg-black/5 backdrop-blur-[2px]"
+                  >
+                    <div
+                      class="w-4/5 rounded-xl bg-white p-6 shadow-2xl dark:bg-slate-900"
+                    >
+                      <div class="mb-4 flex items-center justify-between">
+                        <span
+                          class="text-xs font-bold text-slate-400 uppercase tracking-tighter"
+                          >New Entry</span
+                        >
+                        <span class="material-symbols-outlined text-slate-400"
+                          >close</span
+                        >
+                      </div>
+                      <div
+                        class="mb-4 h-12 w-full rounded-lg bg-slate-100 flex items-center px-4 dark:bg-slate-800"
+                      >
+                        <span
+                          class="text-primary font-mono text-lg font-semibold"
+                          >&gt; Nike 50k</span
+                        >
+                        <span class="ml-1 h-6 w-[2px] bg-primary"></span>
+                      </div>
+                      <div class="grid grid-cols-2 gap-3">
+                        <div
+                          class="h-8 rounded bg-slate-50 dark:bg-slate-800"
+                        ></div>
+                        <div
+                          class="h-8 rounded bg-slate-50 dark:bg-slate-800"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- Features Section -->
+          <section
+            class="bg-white py-24 dark:bg-slate-950"
+            id="features"
+          >
+            <div class="mx-auto max-w-7xl px-6 lg:px-20">
+              <div class="mb-16 flex flex-col items-center text-center">
+                <h2
+                  class="mb-4 text-4xl font-black tracking-tight text-slate-900 dark:text-white"
+                >
+                  Refined Extension Features
+                </h2>
+                <p
+                  class="max-w-2xl text-lg text-slate-600 dark:text-slate-400"
+                >
+                  Everything you need to master your pipeline without ever
+                  leaving your browser tabs.
+                </p>
+              </div>
+              <div
+                class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4"
+              >
+                <!-- Feature 1: Quick Log -->
+                <div
+                  class="group flex flex-col gap-4 rounded-2xl border border-slate-100 bg-slate-50/50 p-8 transition-all hover:bg-white hover:shadow-xl hover:shadow-primary/5 dark:border-slate-800 dark:bg-slate-900/50 dark:hover:bg-slate-900"
+                >
+                  <div
+                    class="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-white group-hover:scale-110 transition-transform"
+                  >
+                    <span class="material-symbols-outlined">terminal</span>
+                  </div>
+                  <h3
+                    class="text-xl font-bold text-slate-900 dark:text-white"
+                  >
+                    Quick Log
+                  </h3>
+                  <p
+                    class="text-sm leading-relaxed text-slate-600 dark:text-slate-400"
+                  >
+                    Execute 'Nike 50k' command-line style entries for instant
+                    logging. No menus, no clutter, just speed.
+                  </p>
+                </div>
+                <!-- Feature 2: Real-time Dashboard -->
+                <div
+                  class="group flex flex-col gap-4 rounded-2xl border border-slate-100 bg-slate-50/50 p-8 transition-all hover:bg-white hover:shadow-xl hover:shadow-primary/5 dark:border-slate-800 dark:bg-slate-900/50 dark:hover:bg-slate-900"
+                >
+                  <div
+                    class="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-white group-hover:scale-110 transition-transform"
+                  >
+                    <span class="material-symbols-outlined">dashboard</span>
+                  </div>
+                  <h3
+                    class="text-xl font-bold text-slate-900 dark:text-white"
+                  >
+                    Real-time Dashboard
+                  </h3>
+                  <p
+                    class="text-sm leading-relaxed text-slate-600 dark:text-slate-400"
+                  >
+                    Track your commission goals and quota progress live from the
+                    Today Tab. See your paycheck grow in real-time.
+                  </p>
+                </div>
+                <!-- Feature 3: Privacy First -->
+                <div
+                  class="group flex flex-col gap-4 rounded-2xl border border-slate-100 bg-slate-50/50 p-8 transition-all hover:bg-white hover:shadow-xl hover:shadow-primary/5 dark:border-slate-800 dark:bg-slate-900/50 dark:hover:bg-slate-900"
+                >
+                  <div
+                    class="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-white group-hover:scale-110 transition-transform"
+                  >
+                    <span class="material-symbols-outlined">visibility_off</span>
+                  </div>
+                  <h3
+                    class="text-xl font-bold text-slate-900 dark:text-white"
+                  >
+                    Privacy First
+                  </h3>
+                  <p
+                    class="text-sm leading-relaxed text-slate-600 dark:text-slate-400"
+                  >
+                    Maintain confidentiality with a dedicated Privacy Mode
+                    toggle to blur sensitive figures during screen shares.
+                  </p>
+                </div>
+                <!-- Feature 4: Presets -->
+                <div
+                  class="group flex flex-col gap-4 rounded-2xl border border-slate-100 bg-slate-50/50 p-8 transition-all hover:bg-white hover:shadow-xl hover:shadow-primary/5 dark:border-slate-800 dark:bg-slate-900/50 dark:hover:bg-slate-900"
+                >
+                  <div
+                    class="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-white group-hover:scale-110 transition-transform"
+                  >
+                    <span class="material-symbols-outlined">package_2</span>
+                  </div>
+                  <h3
+                    class="text-xl font-bold text-slate-900 dark:text-white"
+                  >
+                    Presets
+                  </h3>
+                  <p
+                    class="text-sm leading-relaxed text-slate-600 dark:text-slate-400"
+                  >
+                    Manage complex deal structures easily with custom Presets &
+                    Packages management for repeat business.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- Pricing Section -->
+          <section
+            class="mx-auto max-w-7xl px-6 lg:px-20 py-24"
+            id="pricing"
+          >
+            <div class="mb-16 flex flex-col items-center text-center">
+              <h2
+                class="mb-4 text-4xl font-black tracking-tight text-slate-900 dark:text-white"
+              >
+                Simple, Lifetime Access
+              </h2>
+              <p
+                class="max-w-2xl text-lg text-slate-600 dark:text-slate-400"
+              >
+                Ditch the monthly subscriptions. Pay once, own it forever.
+              </p>
+            </div>
+            <div class="mx-auto max-w-lg">
+              <div
+                class="relative rounded-3xl border border-primary bg-white p-10 shadow-2xl dark:bg-slate-900"
+              >
+                <div
+                  class="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-primary px-4 py-1 text-xs font-bold uppercase tracking-widest text-white shadow-lg shadow-primary/40"
+                >
+                  Most Popular
+                </div>
+                <div class="mb-8 flex flex-col items-center text-center">
+                  <h3
+                    class="text-2xl font-black text-slate-900 dark:text-white"
+                  >
+                    Unlimited Plan
+                  </h3>
+                  <div class="mt-4 flex items-baseline gap-1">
+                    <span
+                      class="text-5xl font-black tracking-tight text-slate-900 dark:text-white"
+                      >$49</span
+                    >
+                    <span class="text-slate-500 font-bold">lifetime</span>
+                  </div>
+                  <p class="mt-4 text-slate-500">
+                    Perfect for serious sales professionals who want the
+                    ultimate edge.
+                  </p>
+                </div>
+                <ul class="mb-10 flex flex-col gap-4">
+                  <li
+                    class="flex items-center gap-3 text-slate-700 dark:text-slate-300"
+                  >
+                    <span
+                      class="material-symbols-outlined text-primary font-bold"
+                      >check_circle</span
+                    >
+                    <span>Unlimited Deal Logging</span>
+                  </li>
+                  <li
+                    class="flex items-center gap-3 text-slate-700 dark:text-slate-300"
+                  >
+                    <span
+                      class="material-symbols-outlined text-primary font-bold"
+                      >check_circle</span
+                    >
+                    <span>Real-time Commission Tracking</span>
+                  </li>
+                  <li
+                    class="flex items-center gap-3 text-slate-700 dark:text-slate-300"
+                  >
+                    <span
+                      class="material-symbols-outlined text-primary font-bold"
+                      >check_circle</span
+                    >
+                    <span>Advanced Presets &amp; Templates</span>
+                  </li>
+                  <li
+                    class="flex items-center gap-3 text-slate-700 dark:text-slate-300"
+                  >
+                    <span
+                      class="material-symbols-outlined text-primary font-bold"
+                      >check_circle</span
+                    >
+                    <span>Full Privacy Mode Toggle</span>
+                  </li>
+                  <li
+                    class="flex items-center gap-3 text-slate-700 dark:text-slate-300"
+                  >
+                    <span
+                      class="material-symbols-outlined text-primary font-bold"
+                      >check_circle</span
+                    >
+                    <span>Lifetime Feature Updates</span>
+                  </li>
+                  <li
+                    class="flex items-center gap-3 text-slate-700 dark:text-slate-300"
+                  >
+                    <span
+                      class="material-symbols-outlined text-primary font-bold"
+                      >check_circle</span
+                    >
+                    <span>One-time Payment - No Subscription</span>
+                  </li>
+                </ul>
+                <button
+                  class="w-full rounded-2xl bg-primary py-5 text-lg font-black text-white shadow-xl shadow-primary/30 transition-all hover:scale-[1.02] active:scale-95"
+                  type="button"
+                  id="pay-button"
+                >
+                  Get Started Today
+                </button>
+              </div>
+            </div>
+          </section>
+        </main>
+        <!-- Footer -->
+        <footer
+          class="border-t border-slate-200 bg-white px-6 lg:px-20 py-16 dark:border-slate-800 dark:bg-slate-950"
+        >
+          <div class="mx-auto max-w-7xl">
+            <div
+              class="grid grid-cols-1 gap-12 lg:grid-cols-4"
+            >
+              <div class="lg:col-span-2">
+                <div class="flex items-center gap-3 mb-6">
+                  <div
+                    class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white"
+                  >
+                    <span class="material-symbols-outlined text-xl"
+                      >rocket_launch</span
+                    >
+                  </div>
+                  <h2
+                    class="text-xl font-black text-slate-900 dark:text-white"
+                  >
+                    MetroRate
+                  </h2>
+                </div>
+                <p class="mb-8 max-w-sm text-slate-500">
+                  Building tools for the modern sales force. Fast, private, and
+                  powerful extensions for everyday success.
+                </p>
+                <div class="flex gap-4">
+                  <a
+                    class="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-primary hover:text-white transition-all dark:bg-slate-800"
+                    href="#"
+                  >
+                    <svg
+                      class="h-5 w-5 fill-current"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92,0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.84 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"
+                      ></path>
+                    </svg>
+                  </a>
+                  <a
+                    class="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-primary hover:text-white transition-all dark:bg-slate-800"
+                    href="#"
+                  >
+                    <svg
+                      class="h-5 w-5 fill-current"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.238 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+                      ></path>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+              <div>
+                <h4
+                  class="mb-6 text-sm font-bold uppercase tracking-widest text-slate-900 dark:text-white"
+                >
+                  Product
+                </h4>
+                <ul class="flex flex-col gap-4 text-sm text-slate-500">
+                  <li>
+                    <a
+                      class="hover:text-primary transition-colors store-link"
+                      href="#"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      >Chrome Web Store</a
+                    >
+                  </li>
+                  <li>
+                    <a class="hover:text-primary transition-colors" href="#"
+                      >Extension Updates</a
+                    >
+                  </li>
+                  <li>
+                    <a class="hover:text-primary transition-colors" href="#pricing"
+                      >Pricing</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="hover:text-primary transition-colors"
+                      href="mailto:metrorateextension@gmail.com"
+                      >Support Center</a
+                    >
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h4
+                  class="mb-6 text-sm font-bold uppercase tracking-widest text-slate-900 dark:text-white"
+                >
+                  Legal
+                </h4>
+                <ul class="flex flex-col gap-4 text-sm text-slate-500">
+                  <li>
+                    <a class="hover:text-primary transition-colors" href="#"
+                      >Privacy Policy</a
+                    >
+                  </li>
+                  <li>
+                    <a class="hover:text-primary transition-colors" href="#"
+                      >Terms of Service</a
+                    >
+                  </li>
+                  <li>
+                    <a class="hover:text-primary transition-colors" href="#"
+                      >Cookie Policy</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div
+              class="mt-16 flex flex-col items-center justify-between border-t border-slate-100 pt-8 dark:border-slate-800 md:flex-row"
+            >
+              <p class="text-sm text-slate-400">
+                © <span id="year"></span> MetroRate. All rights reserved.
+              </p>
+              <div class="mt-4 flex gap-6 md:mt-0">
+                <span class="text-xs font-medium text-slate-400"
+                  >v2.4.0 Refined Release</span
+                >
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
     </div>
-    <nav>
-      <a href="#about">About</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#privacy">Privacy</a>
-    </nav>
-    <a href="https://chromewebstore.google.com" class="btn btn-primary btn-nav store-link" target="_blank" rel="noopener noreferrer">Add to Chrome</a>
-  </header>
 
-  <main>
-    <section class="hero">
-      <div class="hero-inner">
-        <div class="hero-content">
-          <h1>See your commission at a glance</h1>
-          <p>
-            MetroRate is a minimalist Chrome extension that lives in your browser side panel.
-            Log deals like <strong>Nike 58k</strong> and instantly see commission, pipeline value, and progress toward your goal.
-          </p>
-          <div class="hero-actions">
-            <a href="https://chromewebstore.google.com" class="btn btn-primary store-link" target="_blank" rel="noopener noreferrer">Add to Chrome</a>
-            <button type="button" id="buy-button" class="btn btn-secondary">View plans</button>
-          </div>
-        </div>
-        <div class="hero-mockup">
-          <div class="mockup-card">
-            <div class="mockup-header">MetroRate</div>
-            <ul class="mockup-list">
-              <li><span class="mockup-dot"></span> Dashboard</li>
-              <li><span class="mockup-dot"></span> Overview</li>
-              <li><span class="mockup-dot"></span> Sales</li>
-              <li><span class="mockup-dot"></span> Expenses</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="about" class="section">
-      <h2>About MetroRate</h2>
-      <p class="lead">
-        A commission tracker built for people who move fast. No clutter — just your numbers, next to your pipeline.
-      </p>
-      <div class="feature-grid">
-        <div class="feature-card">
-          <div class="feature-icon feature-icon-plus">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </div>
-          <h3>Log a deal</h3>
-          <p>Quickly input new sales data directly in your browser sidebar.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon feature-icon-grid">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-          </div>
-          <h3>Dashboard</h3>
-          <p>Real-time overview of your pipeline, quota, and total earnings.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon feature-icon-clock">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          </div>
-          <h3>History</h3>
-          <p>Track your performance over weeks and months with visual trends.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon feature-icon-settings">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-          </div>
-          <h3>Presets</h3>
-          <p>Save common commission structures for faster data entry.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="pricing" class="section">
-      <h2>Plans &amp; pricing</h2>
-      <p class="lead">Simple, transparent pricing for every type of closer.</p>
-      <div class="pricing-grid">
-        <div class="pricing-card">
-          <h3>Free Plan</h3>
-          <p class="price"><span class="price-amount">$0</span></p>
-          <p class="price-desc">always free</p>
-          <ul class="price-features">
-            <li><span class="check check-green"></span> Daily limit on new deal logs</li>
-            <li><span class="check check-green"></span> All data stored locally in Chrome</li>
-            <li><span class="check check-green"></span> Commission rate &amp; presets</li>
-            <li><span class="check check-green"></span> Goal and history tracking</li>
-          </ul>
-          <a href="https://chromewebstore.google.com" class="btn btn-secondary btn-block store-link" target="_blank" rel="noopener noreferrer">Get Started</a>
-        </div>
-        <div class="pricing-card pricing-card-featured">
-          <span class="badge">BEST VALUE</span>
-          <h3>Unlimited Plan</h3>
-          <p class="price"><span class="price-amount">$49</span></p>
-          <p class="price-desc">one-time</p>
-          <ul class="price-features">
-            <li><span class="check check-blue"></span> Unlimited logs per day, forever</li>
-            <li><span class="check check-blue"></span> Local storage &amp; privacy</li>
-            <li><span class="check check-blue"></span> All Free features included</li>
-            <li><span class="check check-blue"></span> Lifetime access — no subscription</li>
-          </ul>
-          <button type="button" id="pay-button" class="btn btn-primary btn-block">Proceed to secure checkout</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="privacy" class="section">
-      <h2>Privacy Policy</h2>
-      <p class="lead">MetroRate is built with a privacy-first mindset. We understand the sensitivity of sales data and earnings information.</p>
-      <div class="privacy-grid">
-        <div class="privacy-card">
-          <h3>Local Storage</h3>
-          <p>All your data is stored locally, in your Chrome browser's storage. We do not have a centralized database where your deals are stored.</p>
-        </div>
-        <div class="privacy-card">
-          <h3>Secure Payments</h3>
-          <p>Payment processing for the Unlimited Plan is handled through secure third-party providers. We never see your credit card details.</p>
-        </div>
-        <div class="privacy-card">
-          <h3>No Tracking</h3>
-          <p>We do not track your browsing history or use cookies for analytics. Your activity inside the extension remains private to you.</p>
-        </div>
-        <div class="privacy-card">
-          <h3>Export Anytime</h3>
-          <p>You own your data. You can export your entire deal history to a CSV file at any time from the settings menu.</p>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-      <div class="footer-logo">
-        <span class="logo-icon small" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        </span>
-        <span>© <span id="year"></span> MetroRate. All rights reserved.</span>
-      </div>
-      <div class="footer-links">
-        <a href="#about">About</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#privacy">Privacy</a>
-        <a href="mailto:metrorateextension@gmail.com">Support</a>
-      </div>
-    </div>
-  </footer>
-
-  <script src="config.js"></script>
-  <script src="script.js"></script>
-</body>
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+  </body>
 </html>
