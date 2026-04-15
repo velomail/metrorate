@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
+import { storage } from "../lib/storage";
 
 export type Deal = {
   id: string;
@@ -67,30 +68,8 @@ export function parseDeal(
   return { name, value, commission };
 }
 
-const hasChromeStorage =
-  typeof chrome !== "undefined" && !!chrome.storage?.local;
-
-async function loadFromStorage<T>(key: string, fallback: T): Promise<T> {
-  if (!hasChromeStorage) return fallback;
-  return new Promise<T>((resolve) => {
-    chrome.storage.local.get([key], (result) => {
-      if (chrome.runtime?.lastError) {
-        resolve(fallback);
-        return;
-      }
-      resolve((result[key] as T | undefined) ?? fallback);
-    });
-  });
-}
-
-async function saveToStorage<T>(key: string, value: T): Promise<void> {
-  if (!hasChromeStorage) return;
-  return new Promise<void>((resolve) => {
-    chrome.storage.local.set({ [key]: value }, () => {
-      resolve();
-    });
-  });
-}
+const loadFromStorage = storage.get.bind(storage);
+const saveToStorage = storage.set.bind(storage);
 
 export function useCommission() {
   const [deals, setDeals] = useState<Deal[]>([]);
